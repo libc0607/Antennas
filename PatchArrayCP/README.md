@@ -9,15 +9,24 @@ I know they will be lossy, but I don't know how lossy it will be, and there is n
 ## Variants 
 See `./<design>/img*/` for detailed simulated & measured results.   
 
-`5G2_2x2`: Size `90mm * 90mm * 4.0mm` (SMA not included), LHCP, target `5.18GHz \~ 5.32GHz` (Wi-Fi channel `36 \~ 60`), Realized Gain > 11dBi (peak ~12dBi), 35deg/35deg 3dB beamwidth;  
-
-`6G2_2x2`: Size `90mm * 90mm * 4.0mm` (SMA not included), LHCP, target `5.925GHz \~ 6.425GHz` (Wi-Fi 6e/7/...'s lower 6GHz band), Realized Gain > 12dBi (peak ~13dBi), 30deg/30deg 3dB beamwidth; 
-(bonus -- also usable in `5.745GHz \~ 5.825GHz` (Wi-Fi channel `149 \~ 165`) with a Realized Gain > 11dBi)    
-
+`5G2_2x2`: Size `90mm * 97.5mm * 4.0mm` (SMA not included), LHCP, target `5.18~5.32GHz`, Realized Gain `11~12dBi`, 3dB beamwidth `35°/35°`;  
+  
+  
+`6G2_2x2`: Size `90mm * 97.5mm * 4.0mm` (SMA not included), LHCP, target `5.925~6.425GHz`, Realized Gain `12~13dBi`, 3dB beamwidth `30°/30°`; 
+(bonus -- also usable in `5.745~5.925GHz` with a Realized Gain > `11dBi`)    
+  
+  
+`6G2_2x4`: Size `180mm * 100mm * 4.0mm` (SMA not included), LHCP, target `5.925~6.425GHz`, Realized Gain `14~15dBi`, 3dB beamwidth `30°/13°`; 
+(bonus -- also usable in `5.745~5.925GHz` with a Realized Gain > `13dBi`)    
+  
+  
 For 5.5~5.9GHz band, just use the Triple Feed Patch (Array). It's definitely better.  
 
 The 2 holes at the bottom are `M3` with `36mm` spacing. Compatible with some AAT mounting.  
 
+I don't think I need to make a `4x4` variant. As the simulation result of `2x2` and `2x4` shown, doubling the array size gives only `~1.8dB` additional rgain (should be `3dB` if no loss).  
+The loss will be too high for `4x4` array (and the PCB cost... too).  
+Maybe I will try something bigger with PTFE substrates ... after the AI data center bubble bursts. Too expensive so far )   
 
 
 ## PCB Ordering 
@@ -25,14 +34,20 @@ For all PCBs in folder: JLCPCB, `2L`, `1.0mm` thickness, Surface Finish: any
 `Gerber*.zip`: exported Gerber files  
 `ProDoc*.epro2`: Use 嘉立创EDA专业版 (EasyEDA PRO) to import it, then modify (**ONLY** use it when you need to bypass the free sample's similarity check in JLCPCB; **DO NOT TOUCH the copper & board outline**, just add some small silk on the edge)   
 
-And: 
+And for `2x2` variants: 
  - 1 \* Surface-mount SMA connector (same as triple feed patch)   
  - 9 \* M3x8 nylon screw   
  - 9 \* M3 nylon nut  
  - 9 \* 5mm(outer)\*3mm(inner)\*2mm(height) nylon spacer  
  - Some copper wire, diameter = 1.0 mm 
+
+For `2x4`:  
+ - `14` sets of nylons are needed 
+ - Each antenna set needs `1` feed PCB (`180mm*100mm`) and `2` patch PCBs (`90mm*90mm`) combined together; please notice the quantity when ordering
+ - Others are same as `2x2`
  
-The height of the nylon spacer should be ** 2.0 mm **. This is critical.  
+ 
+The height of the nylon spacer should be **2.0 mm**. This is critical.  
 
 ## Assembly  
 
@@ -72,8 +87,9 @@ Trim the pin at the other side, make the plate FLAT, and clean the PCB:
 
 This design was from scratch. It goes in a 'regular way' (compare with the TFP(A)), combining 2x2 simple patch CP antennas (square patch, chamfered, air substrate) with a sequential rotating feeding network.  
 
-The array is separated by 45mm, which is `0.93*λ0(6.2GHz)` and  `0.78*λ0(5.2GHz)`. So there will be some small sidelobes. 
+The array is separated by 45mm, which is `0.93*λ0(6.2GHz)` and  `0.78*λ0(5.2GHz)`. So there will be some small sidelobes.  
 2x2 is the maximum array we can get cheaply (5 pcs free samples in China / $2 others) from JLCPCB.  
+2x4 is not suitable for any discount, so it should cost some... but not too much.  
 
 I took the feeding network from the paper: [Lin, S. and Y. Lin, "A compact sequential-phase feed using uniform transmission lines for circularly polarized sequential-rotation arrays," IEEE Trans. Antennas Propag., Vol. 59, No. 7, 2721-2724, 2011.](https://ieeexplore.ieee.org/document/5765453/)   
 
